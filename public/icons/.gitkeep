@@ -1,0 +1,3 @@
+export { };
+// Placeholder — replace with actual 192x192 PNG icon
+// Generate with: npx pwa-asset-generator logo.svg public/icons

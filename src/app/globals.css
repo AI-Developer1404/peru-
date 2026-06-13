@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   CSS Custom Properties — Warm Altitude Luxury
+   ============================================ */
+:root {
+  /* Brand — warm terracotta Andes palette */
+  --brand-color: #D4956A;
+  --brand-color-light: #E8B896;
+  --brand-color-dark: #B87A4E;
+  --brand-rgb: 212, 149, 106;
+
+  /* Accent — Andes sky blue */
+  --accent-color: #7C9EB2;
+  --accent-rgb: 124, 158, 178;
+
+  /* Text — warm off-white palette */
+  --text-primary: #F5F0EB;
+  --text-secondary: rgba(245, 240, 235, 0.65);
+  --text-muted: rgba(245, 240, 235, 0.35);
+
+  /* Surfaces — deep indigo-black, never pure black */
+  --bg-deep: #0C0A14;
+  --bg-surface: rgba(15, 12, 25, 0.45);
+  --bg-elevated: rgba(25, 20, 40, 0.55);
+
+  /* Dashboard tokens */
+  --dash-bg: #0C0A14;
+  --dash-surface: #16131F;
+  --dash-border: rgba(255, 255, 255, 0.06);
+}
+
+/* ============================================
+   Base Layer
+   ============================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply font-sans;
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: rgba(var(--brand-rgb), 0.3);
+    color: #fff;
+  }
+
+  /* Invisible scrollbar for immersive feel */
+  ::-webkit-scrollbar { width: 0px; }
+  * { scrollbar-width: none; }
+}
+
+/* ============================================
+   Component Layer
+   ============================================ */
+@layer components {
+  /* Glassmorphism — warm tinted */
+  .glass {
+    @apply border border-white/[0.08] rounded-2xl;
+    background: var(--bg-surface);
+    backdrop-filter: blur(24px) saturate(1.3);
+    -webkit-backdrop-filter: blur(24px) saturate(1.3);
+  }
+
+  .glass-heavy {
+    @apply border border-white/[0.1] rounded-2xl;
+    background: var(--bg-elevated);
+    backdrop-filter: blur(40px) saturate(1.4);
+    -webkit-backdrop-filter: blur(40px) saturate(1.4);
+  }
+
+  .glass-pill {
+    @apply border border-white/[0.12] rounded-full;
+    background: rgba(15, 12, 25, 0.6);
+    backdrop-filter: blur(40px) saturate(1.5);
+    -webkit-backdrop-filter: blur(40px) saturate(1.5);
+  }
+
+  /* Brand CTA — warm terracotta */
+  .btn-brand {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl
+           font-sans font-medium text-sm tracking-wide transition-all duration-300;
+    background: linear-gradient(135deg, var(--brand-color-light), var(--brand-color));
+    color: #0C0A14;
+    box-shadow: 0 4px 24px rgba(var(--brand-rgb), 0.25);
+  }
+  .btn-brand:hover {
+    box-shadow: 0 8px 36px rgba(var(--brand-rgb), 0.4);
+    transform: translateY(-1px);
+  }
+  .btn-brand:active { transform: scale(0.97); }
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl
+           font-sans font-medium text-sm tracking-wide transition-all duration-300
+           border border-white/[0.12] text-white/75 hover:text-white
+           hover:border-white/[0.2] hover:bg-white/[0.04];
+  }
+  .btn-ghost:active { transform: scale(0.97); }
+
+  .input-field {
+    @apply w-full px-4 py-3 rounded-xl text-sm font-sans
+           placeholder:text-white/25 border border-white/[0.08]
+           focus:outline-none focus:border-[var(--brand-color)]
+           focus:ring-1 focus:ring-[var(--brand-color)]
+           transition-all duration-200;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-primary);
+  }
+
+  /* Video overlay — cinematic gradient, warmer */
+  .video-gradient {
+    background: linear-gradient(
+      180deg,
+      rgba(12, 10, 20, 0.4) 0%,
+      rgba(12, 10, 20, 0.05) 30%,
+      rgba(12, 10, 20, 0.1) 60%,
+      rgba(12, 10, 20, 0.85) 100%
+    );
+  }
+
+  /* Category pill */
+  .category-pill {
+    @apply px-4 py-2 rounded-full text-xs font-medium font-sans
+           border transition-all duration-200 whitespace-nowrap;
+    border-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+  }
+  .category-pill:hover {
+    border-color: rgba(var(--brand-rgb), 0.4);
+    color: var(--text-primary);
+  }
+  .category-pill.active {
+    background: rgba(var(--brand-rgb), 0.15);
+    border-color: var(--brand-color);
+    color: var(--brand-color);
+  }
+}
+
+/* ============================================
+   Utilities Layer
+   ============================================ */
+@layer utilities {
+  .text-gradient-brand {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      135deg,
+      var(--brand-color-light),
+      var(--brand-color),
+      var(--brand-color-dark)
+    );
+  }
+
+  /* Google Maps dark overrides */
+  .gm-style .gm-style-iw-chr,
+  .gm-style .gm-ui-hover-effect,
+  .gmnoprint { display: none !important; }
+}
