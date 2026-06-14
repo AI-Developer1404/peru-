@@ -9,6 +9,7 @@ import BottomNav from '@/components/guest/BottomNav';
 import HomeView from '@/components/guest/HomeView';
 import MapView from '@/components/guest/MapView';
 import AIConcierge from '@/components/guest/AIConcierge';
+import TransitPanel from '@/components/guest/TransitPanel';
 import LocationSheet from '@/components/guest/LocationSheet';
 import WifiCard from '@/components/guest/WifiCard';
 
@@ -17,7 +18,7 @@ interface GuestLayoutProps {
   locations: Location[];
 }
 
-type ActiveView = 'home' | 'map' | 'chat';
+type ActiveView = 'home' | 'map' | 'chat' | 'transit';
 
 export default function GuestLayout({ hotel, locations }: GuestLayoutProps) {
   const [activeView, setActiveView] = useState<ActiveView>('home');
@@ -53,7 +54,7 @@ export default function GuestLayout({ hotel, locations }: GuestLayoutProps) {
   };
 
   return (
-    <div style={brandVars} className="relative min-h-screen min-h-dvh font-sans overflow-hidden" >
+    <div style={brandVars} className="relative min-h-screen min-h-dvh font-sans overflow-hidden">
       {/* ========== FULLSCREEN VIDEO ========== */}
       {hotel.background_video_url && (
         <video
@@ -137,9 +138,11 @@ export default function GuestLayout({ hotel, locations }: GuestLayoutProps) {
           >
             <HomeView
               hotel={hotel}
+              brandColor={hotel.brand_color}
               onExploreMap={() => setActiveView('map')}
               onOpenChat={() => setActiveView('chat')}
               onShowWifi={() => setShowWifi(true)}
+              onOpenTransit={() => setActiveView('transit')}
             />
           </motion.div>
         )}
@@ -157,6 +160,22 @@ export default function GuestLayout({ hotel, locations }: GuestLayoutProps) {
               locations={locations}
               brandColor={hotel.brand_color}
               onSelectLocation={setSelectedLocation}
+              onBack={() => setActiveView('home')}
+            />
+          </motion.div>
+        )}
+
+        {activeView === 'transit' && (
+          <motion.div
+            key="transit"
+            initial={{ y: '100%' }}
+            animate={{ y: 0 }}
+            exit={{ y: '100%' }}
+            transition={slideUpSpring}
+            className="fixed top-4 left-4 right-4 bottom-24 md:top-6 md:left-6 md:right-6 md:bottom-28 z-20"
+          >
+            <TransitPanel
+              brandColor={hotel.brand_color}
               onBack={() => setActiveView('home')}
             />
           </motion.div>

@@ -3,7 +3,42 @@
 import { useChat } from 'ai/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Send, Sparkles } from 'lucide-react';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
+
+/** Lightweight inline markdown: **bold**, - bullets, newlines */
+function renderMarkdown(text: string) {
+  const lines = text.split('\n');
+  return lines.map((line, li) => {
+    const trimmed = line.trim();
+    const isBullet = trimmed.startsWith('- ') || trimmed.startsWith('• ');
+    const content = isBullet ? trimmed.slice(2) : line;
+
+    // Convert **bold** to <strong>
+    const parts = content.split(/(\*\*[^*]+\*\*)/g);
+    const rendered = parts.map((part, pi) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return <strong key={pi} style={{ color: 'var(--text-primary)', fontWeight: 600 }}>{part.slice(2, -2)}</strong>;
+      }
+      return <span key={pi}>{part}</span>;
+    });
+
+    if (isBullet) {
+      return (
+        <span key={li} className="flex items-start gap-2 mt-1">
+          <span className="w-1 h-1 rounded-full mt-[7px] flex-shrink-0" style={{ backgroundColor: 'var(--brand-color)' }} />
+          <span>{rendered}</span>
+        </span>
+      );
+    }
+
+    return (
+      <span key={li}>
+        {li > 0 && <br />}
+        {rendered}
+      </span>
+    );
+  });
+}
 
 interface AIConciergeProps {
   hotelId: string;
@@ -92,7 +127,7 @@ export default function AIConcierge({ hotelId, hotelName, brandColor, onBack }: 
                     : { backgroundColor: 'rgba(255,255,255,0.05)', color: 'var(--text-secondary)' }
                 }
               >
-                <span className="whitespace-pre-wrap block">{m.content}</span>
+                <span className="whitespace-pre-wrap block">{renderMarkdown(m.content)}</span>
               </div>
             </motion.div>
           ))}

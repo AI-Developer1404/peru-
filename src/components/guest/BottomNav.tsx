@@ -1,9 +1,9 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Home, Compass, Sparkles } from 'lucide-react';
+import { Home, Compass, Sparkles, Train } from 'lucide-react';
 
-type ActiveView = 'home' | 'map' | 'chat';
+type ActiveView = 'home' | 'map' | 'chat' | 'transit';
 
 interface BottomNavProps {
   activeView: ActiveView;
@@ -14,6 +14,7 @@ interface BottomNavProps {
 const navItems: { id: ActiveView; label: string; icon: typeof Home }[] = [
   { id: 'home', label: 'Home', icon: Home },
   { id: 'map', label: 'Discover', icon: Compass },
+  { id: 'transit', label: 'Transit', icon: Train },
   { id: 'chat', label: 'Guide', icon: Sparkles },
 ];
 
