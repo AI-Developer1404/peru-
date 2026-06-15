@@ -2,8 +2,9 @@
 
 import { motion } from 'framer-motion';
 import { X, Play, Pause, ExternalLink, Share2, MapPin } from 'lucide-react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import type { Location } from '@/lib/types';
+import { triggerHaptic } from '@/lib/haptics';
 
 interface LocationSheetProps {
   location: Location;
@@ -34,6 +35,14 @@ export default function LocationSheet({ location, brandColor, onClose }: Locatio
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    triggerHaptic('light');
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
   const toggleAudio = () => {
     if (!audioRef.current) return;
     if (isPlaying) {
@@ -45,6 +54,7 @@ export default function LocationSheet({ location, brandColor, onClose }: Locatio
   };
 
   const handleShare = async () => {
+    triggerHaptic('light');
     const url = `https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`;
     if (navigator.share) {
       await navigator.share({
@@ -73,7 +83,7 @@ export default function LocationSheet({ location, brandColor, onClose }: Locatio
         initial={{ y: '100%' }}
         animate={{ y: 0 }}
         exit={{ y: '100%' }}
-        transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 35 }}
         className="fixed bottom-0 left-0 right-0 z-50 glass-heavy rounded-t-3xl max-h-[85vh] overflow-y-auto"
       >
         {/* Drag handle */}
@@ -120,7 +130,10 @@ export default function LocationSheet({ location, brandColor, onClose }: Locatio
               </motion.button>
               <motion.button
                 whileTap={{ scale: 0.9 }}
-                onClick={onClose}
+                onClick={() => {
+                  triggerHaptic('light');
+                  onClose();
+                }}
                 className="p-2 rounded-full hover:bg-white/10 transition-colors"
               >
                 <X className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
@@ -165,17 +178,31 @@ export default function LocationSheet({ location, brandColor, onClose }: Locatio
             </div>
           )}
 
-          {/* Directions link */}
-          <motion.a
-            whileTap={{ scale: 0.97 }}
-            href={`https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-brand w-full text-center"
-          >
-            <ExternalLink className="w-4 h-4" />
-            Navigate Here
-          </motion.a>
+          {/* Actions */}
+          <div className="flex gap-3 mt-4">
+            {location.external_url && (
+              <motion.a
+                whileTap={{ scale: 0.97 }}
+                href={location.external_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-ghost flex-1 text-center text-sm px-4"
+              >
+                <ExternalLink className="w-4 h-4" />
+                Website
+              </motion.a>
+            )}
+            <motion.a
+              whileTap={{ scale: 0.97 }}
+              href={`https://www.google.com/maps/dir/?api=1&destination=${location.lat},${location.lng}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-brand flex-1 text-center text-sm px-4"
+            >
+              <MapPin className="w-4 h-4" />
+              Navigate
+            </motion.a>
+          </div>
         </div>
       </motion.div>
     </>

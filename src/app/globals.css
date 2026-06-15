@@ -49,6 +49,8 @@
     background: var(--bg-deep);
     color: var(--text-primary);
     overflow-x: hidden;
+    overscroll-behavior-y: none; /* Prevent bounce / pull-to-refresh */
+    -webkit-tap-highlight-color: transparent; /* Remove default tap flash on mobile */
   }
 
   ::selection {
@@ -131,19 +133,23 @@
     );
   }
 
-  /* Category pill */
+  /* Category pill - optimized for light map contrast */
   .category-pill {
     @apply px-4 py-2 rounded-full text-xs font-medium font-sans
-           border transition-all duration-200 whitespace-nowrap;
-    border-color: rgba(255, 255, 255, 0.1);
-    color: var(--text-secondary);
-  }
-  .category-pill:hover {
-    border-color: rgba(var(--brand-rgb), 0.4);
+           border transition-all duration-200 whitespace-nowrap shadow-md;
+    background: rgba(12, 10, 20, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-color: rgba(255, 255, 255, 0.08);
     color: var(--text-primary);
   }
+  .category-pill:hover {
+    border-color: rgba(var(--brand-rgb), 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  }
   .category-pill.active {
-    background: rgba(var(--brand-rgb), 0.15);
+    background: rgba(12, 10, 20, 0.95);
     border-color: var(--brand-color);
     color: var(--brand-color);
   }

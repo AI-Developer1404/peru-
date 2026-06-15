@@ -65,6 +65,7 @@ const MOCK_RESPONSES: Record<string, string> = {
   altitude: `Great question! Cusco is at 3,400m altitude, so it's very important to take it easy on your first day. Drink lots of **coca tea** (available at reception), stay well hydrated with at least 3 liters of water per day, and avoid alcohol for the first 24 hours. Most people feel normal after 48 hours. If symptoms persist, our front desk can arrange medical assistance.`,
   wifi: `Our WiFi network is **CasaDelSol_Guest** and the password is **bienvenidos2025**. You can also find this information in the WiFi section of the app. Enjoy!`,
   machu: `For Machu Picchu, I recommend taking the **PeruRail** from Poroy station. There are departures at 6:10, 7:45, and 8:25 AM. The scenic ride through the Urubamba valley is an experience in itself! Book your tickets at perurail.com at least a week in advance during peak season (June–August). Would you like tips on what to bring?`,
+  hotel_info: `Check-out time is **11:00 AM**. We offer complimentary luggage storage if you have a late flight. A delicious buffet breakfast is served daily from **6:30 AM to 10:00 AM** in our main dining room. Our reception is open 24/7 if you need anything else!`,
 };
 
 function getMockResponse(message: string): string {
@@ -83,6 +84,9 @@ function getMockResponse(message: string): string {
   }
   if (lower.includes('machu') || lower.includes('picchu') || lower.includes('train') || lower.includes('perurail')) {
     return MOCK_RESPONSES.machu;
+  }
+  if (lower.includes('check-out') || lower.includes('checkout') || lower.includes('breakfast') || lower.includes('luggage') || lower.includes('check out') || lower.includes('reception')) {
+    return MOCK_RESPONSES.hotel_info;
   }
   return MOCK_RESPONSES.default;
 }

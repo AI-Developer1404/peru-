@@ -9,7 +9,7 @@ import BottomNav from '@/components/guest/BottomNav';
 import HomeView from '@/components/guest/HomeView';
 import MapView from '@/components/guest/MapView';
 import AIConcierge from '@/components/guest/AIConcierge';
-import TransitPanel from '@/components/guest/TransitPanel';
+import ToursFeed from '@/components/guest/ToursFeed';
 import LocationSheet from '@/components/guest/LocationSheet';
 import WifiCard from '@/components/guest/WifiCard';
 
@@ -20,7 +20,10 @@ interface GuestLayoutProps {
 
 type ActiveView = 'home' | 'map' | 'chat' | 'transit';
 
-export default function GuestLayout({ hotel, locations }: GuestLayoutProps) {
+import { LanguageProvider } from './LanguageContext';
+import LanguageToggle from './LanguageToggle';
+
+function GuestLayoutContent({ hotel, locations }: GuestLayoutProps) {
   const [activeView, setActiveView] = useState<ActiveView>('home');
   const [isVideoReady, setIsVideoReady] = useState(false);
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
@@ -49,8 +52,8 @@ export default function GuestLayout({ hotel, locations }: GuestLayoutProps) {
   // Spring transition for slide-overs
   const slideUpSpring = {
     type: 'spring' as const,
-    stiffness: 300,
-    damping: 30,
+    stiffness: 400,
+    damping: 35,
   };
 
   return (
@@ -90,12 +93,17 @@ export default function GuestLayout({ hotel, locations }: GuestLayoutProps) {
         />
       )}
 
+      {/* ========== LANGUAGE TOGGLE ========== */}
+      <div className="fixed top-6 left-6 z-50">
+        <LanguageToggle />
+      </div>
+
       {/* ========== FLOATING AUDIO WIDGET ========== */}
       {hotel.welcome_audio_url && (
         <motion.button
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: isVideoReady || !hotel.background_video_url ? 1 : 0, scale: 1 }}
-          transition={{ delay: 1.2, duration: 0.6 }}
+          transition={{ delay: 1.2, duration: 0.4 }}
           whileTap={{ scale: 0.93 }}
           onClick={toggleAudio}
           className="fixed top-6 right-6 z-50 w-11 h-11 rounded-full glass-pill flex items-center justify-center group"
@@ -133,7 +141,7 @@ export default function GuestLayout({ hotel, locations }: GuestLayoutProps) {
             initial={{ opacity: 0 }}
             animate={{ opacity: isVideoReady || !hotel.background_video_url ? 1 : 0 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.3 }}
             className="relative z-10"
           >
             <HomeView
@@ -174,7 +182,7 @@ export default function GuestLayout({ hotel, locations }: GuestLayoutProps) {
             transition={slideUpSpring}
             className="fixed top-4 left-4 right-4 bottom-24 md:top-6 md:left-6 md:right-6 md:bottom-28 z-20"
           >
-            <TransitPanel
+            <ToursFeed
               brandColor={hotel.brand_color}
               onBack={() => setActiveView('home')}
             />
@@ -229,5 +237,13 @@ export default function GuestLayout({ hotel, locations }: GuestLayoutProps) {
         )}
       </AnimatePresence>
     </div>
+  );
+}
+
+export default function GuestLayout(props: GuestLayoutProps) {
+  return (
+    <LanguageProvider>
+      <GuestLayoutContent {...props} />
+    </LanguageProvider>
   );
 }

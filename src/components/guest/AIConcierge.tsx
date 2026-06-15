@@ -4,6 +4,7 @@ import { useChat } from 'ai/react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowLeft, Send, Sparkles } from 'lucide-react';
 import { useRef, useEffect, useMemo } from 'react';
+import { useLanguage } from './LanguageContext';
 
 /** Lightweight inline markdown: **bold**, - bullets, newlines */
 function renderMarkdown(text: string) {
@@ -48,14 +49,17 @@ interface AIConciergeProps {
 }
 
 const QUICK_PROMPTS = [
-  '🍽️ Best restaurants nearby?',
-  '🏔️ Altitude tips for today',
-  '🚌 Sacred Valley tour info',
-  '🚂 How to get to Machu Picchu?',
+  'ai.prompt.restaurants',
+  'ai.prompt.altitude',
+  'ai.prompt.sacred_valley',
+  'ai.prompt.machu_picchu',
 ];
 
 export default function AIConcierge({ hotelId, hotelName, brandColor, onBack }: AIConciergeProps) {
+  const { t } = useLanguage();
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const welcomeMessage = t('ai.welcome', { hotelName });
 
   const { messages, input, handleInputChange, handleSubmit, isLoading, append } = useChat({
     api: '/api/chat',
@@ -64,7 +68,7 @@ export default function AIConcierge({ hotelId, hotelName, brandColor, onBack }: 
       {
         id: 'welcome',
         role: 'assistant',
-        content: `Welcome to ${hotelName}! 🌿\n\nI'm your personal travel guide — I know Cusco inside and out. Whether you need dining reservations, tour bookings, altitude advice, or hidden local gems, I'm here to help.\n\nWhat can I assist you with?`,
+        content: welcomeMessage,
       },
     ],
   });
@@ -98,7 +102,7 @@ export default function AIConcierge({ hotelId, hotelName, brandColor, onBack }: 
             <Sparkles className="w-4 h-4" style={{ color: brandColor }} />
           </div>
           <div>
-            <p className="text-sm font-sans font-medium" style={{ color: 'var(--text-primary)' }}>Your Travel Guide</p>
+            <p className="text-sm font-sans font-medium" style={{ color: 'var(--text-primary)' }}>{t('ai.guide')}</p>
             <p className="text-[11px] font-sans" style={{ color: 'var(--text-muted)' }}>{hotelName}</p>
           </div>
         </div>
@@ -141,15 +145,15 @@ export default function AIConcierge({ hotelId, hotelName, brandColor, onBack }: 
             transition={{ delay: 0.4 }}
             className="flex flex-wrap gap-2 mt-4"
           >
-            {QUICK_PROMPTS.map((prompt) => (
+            {QUICK_PROMPTS.map((promptKey) => (
               <motion.button
-                key={prompt}
+                key={promptKey}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => append({ role: 'user', content: prompt })}
+                onClick={() => append({ role: 'user', content: t(promptKey) })}
                 className="glass text-xs px-3.5 py-2 hover:border-white/20 transition-colors"
                 style={{ color: 'var(--text-secondary)' }}
               >
-                {prompt}
+                {t(promptKey)}
               </motion.button>
             ))}
           </motion.div>
@@ -185,7 +189,7 @@ export default function AIConcierge({ hotelId, hotelName, brandColor, onBack }: 
           <input
             value={input}
             onChange={handleInputChange}
-            placeholder="Ask me anything about Cusco..."
+            placeholder={t('ai.placeholder')}
             className="flex-1 bg-transparent text-sm font-sans placeholder:text-white/20 focus:outline-none"
             style={{ color: 'var(--text-primary)' }}
             autoComplete="off"

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Mountain, Shield, Coins, Droplets, Sun } from 'lucide-react';
+import { useLanguage } from './LanguageContext';
 
 interface TipsCarouselProps {
   brandColor: string;
@@ -90,6 +91,7 @@ const TIPS: TipCard[] = [
 ];
 
 export default function TipsCarousel({ brandColor }: TipsCarouselProps) {
+  const { t } = useLanguage();
   const [activeIndex, setActiveIndex] = useState(0);
 
   const goNext = () => setActiveIndex((i) => (i + 1) % TIPS.length);
@@ -103,7 +105,7 @@ export default function TipsCarousel({ brandColor }: TipsCarouselProps) {
       {/* Header row */}
       <div className="flex items-center justify-between mb-4 px-1">
         <p className="text-[10px] tracking-[0.3em] uppercase font-sans font-medium" style={{ color: 'var(--text-muted)' }}>
-          Local Tips
+          {t('tips.title')}
         </p>
         <div className="flex items-center gap-1">
           <motion.button

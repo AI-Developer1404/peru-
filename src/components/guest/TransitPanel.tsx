@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { ArrowLeft, Bus, Train, Car, Clock, MapPin, ExternalLink, AlertTriangle } from 'lucide-react';
+import { useLanguage } from './LanguageContext';
 
 interface TransitPanelProps {
   brandColor: string;
@@ -97,6 +98,8 @@ const typeColors: Record<string, string> = {
 };
 
 export default function TransitPanel({ brandColor, onBack }: TransitPanelProps) {
+  const { t } = useLanguage();
+
   return (
     <div className="flex flex-col w-full h-full rounded-2xl border border-white/10 overflow-hidden" style={{ background: 'var(--bg-elevated)', backdropFilter: 'blur(40px)' }}>
       {/* Header */}
@@ -109,8 +112,8 @@ export default function TransitPanel({ brandColor, onBack }: TransitPanelProps) 
           <ArrowLeft className="w-5 h-5" style={{ color: 'var(--text-muted)' }} />
         </motion.button>
         <div>
-          <p className="text-sm font-sans font-medium" style={{ color: 'var(--text-primary)' }}>Tours & Transport</p>
-          <p className="text-[11px] font-sans" style={{ color: 'var(--text-muted)' }}>Schedules, prices & booking info</p>
+          <p className="text-sm font-sans font-medium" style={{ color: 'var(--text-primary)' }}>{t('transit.title')}</p>
+          <p className="text-[11px] font-sans" style={{ color: 'var(--text-muted)' }}>{t('transit.subtitle')}</p>
         </div>
       </div>
 
@@ -186,7 +189,7 @@ export default function TransitPanel({ brandColor, onBack }: TransitPanelProps) 
                   style={{ color: accentColor }}
                 >
                   <ExternalLink className="w-3 h-3" />
-                  Book online →
+                  {t('transit.book')} →
                 </a>
               )}
             </motion.div>
