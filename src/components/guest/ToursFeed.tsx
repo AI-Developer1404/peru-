@@ -217,7 +217,7 @@ export default function ToursFeed({ brandColor, onBack }: ToursFeedProps) {
                 onClick={() => setSelectedTour(tour)}
                 className="min-w-[280px] w-[280px] md:min-w-[320px] md:w-[320px] snap-start flex-shrink-0 cursor-pointer group"
               >
-                <div className="w-full aspect-[4/5] rounded-2xl overflow-hidden relative mb-4">
+                <div className="w-full h-[260px] md:h-[300px] rounded-2xl overflow-hidden relative mb-4">
                   <img src={tour.image} alt={tMock(tour.titleKey)} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                   <div className="absolute bottom-4 left-4 right-4 flex justify-between items-end">
@@ -249,7 +249,7 @@ export default function ToursFeed({ brandColor, onBack }: ToursFeedProps) {
                 onClick={() => setSelectedTour(tour)}
                 className="min-w-[240px] w-[240px] md:min-w-[280px] md:w-[280px] snap-start flex-shrink-0 cursor-pointer group bg-white/5 rounded-2xl p-3 border border-white/10 hover:bg-white/10 transition-colors"
               >
-                <div className="w-full h-32 rounded-xl overflow-hidden relative mb-4">
+                <div className="w-full h-28 md:h-32 rounded-xl overflow-hidden relative mb-4">
                   <img src={tour.image} alt={tMock(tour.titleKey)} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
                 </div>
                 <div className="px-1 pb-1">

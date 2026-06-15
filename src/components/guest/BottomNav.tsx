@@ -44,13 +44,14 @@ export default function BottomNav({ activeView, brandColor, onChange }: BottomNa
   };
 
   return (
-    <motion.nav
-      initial={{ y: 40, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ delay: 1.2, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-      className="fixed left-1/2 -translate-x-1/2 z-40 bottom-6 mb-[env(safe-area-inset-bottom)]"
-    >
-      <div className="glass-pill px-2 py-2 flex items-center gap-1">
+    <div className="fixed left-1/2 -translate-x-1/2 z-40 bottom-6 mb-[env(safe-area-inset-bottom)] pointer-events-none flex justify-center w-full max-w-md mx-auto">
+      <motion.nav
+        initial={{ y: 40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 1.2, duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        className="pointer-events-auto"
+      >
+        <div className="glass-pill px-2 py-2 flex items-center gap-1">
         {navItems.map((item) => {
           const isActive = activeView === item.id;
           const Icon = item.icon;
@@ -117,6 +118,7 @@ export default function BottomNav({ activeView, brandColor, onChange }: BottomNa
           );
         })}
       </div>
-    </motion.nav>
+      </motion.nav>
+    </div>
   );
 }

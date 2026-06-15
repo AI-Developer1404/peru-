@@ -207,14 +207,17 @@ export default function MapView({ locations, brandColor, onSelectLocation, onBac
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="absolute bottom-28 left-0 right-0 z-20 px-5 overflow-x-auto"
+        className="absolute bottom-28 left-0 right-0 z-20 overflow-x-auto hide-scrollbar"
       >
-        <div className="flex gap-2 pb-2 w-max mx-auto">
+        <div className="flex gap-2 pb-2 px-5 w-max">
           {availableCategories.map((cat) => (
             <button
               key={cat.key}
-              onClick={() => setActiveCategory(cat.key)}
-              className={`category-pill flex items-center gap-1.5 ${activeCategory === cat.key ? 'active' : ''}`}
+              onClick={(e) => {
+                setActiveCategory(cat.key);
+                e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+              }}
+              className={`category-pill flex items-center gap-1.5 transition-transform ${activeCategory === cat.key ? 'active scale-105' : ''}`}
             >
               <span className="text-sm">{cat.emoji}</span>
               {t(cat.labelKey)}
@@ -228,9 +231,9 @@ export default function MapView({ locations, brandColor, onSelectLocation, onBac
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.6 }}
-        className="absolute bottom-4 left-0 right-0 z-20 px-5 overflow-x-auto"
+        className="absolute bottom-4 left-0 right-0 z-20 overflow-x-auto hide-scrollbar snap-x snap-mandatory"
       >
-        <div className="flex gap-3 pb-2 w-max">
+        <div className="flex gap-3 pb-2 px-5 w-max">
           <AnimatePresence mode="popLayout">
             {filteredLocations.map((loc) => (
               <motion.button
@@ -240,26 +243,27 @@ export default function MapView({ locations, brandColor, onSelectLocation, onBac
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.2 }}
-                onClick={() => {
+                onClick={(e) => {
                   onSelectLocation(loc);
+                  e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
                   if (mapInstanceRef.current) {
                     mapInstanceRef.current.setView([loc.lat, loc.lng], 15, { animate: true });
                   }
                 }}
-                className="glass flex items-center gap-3 px-4 py-3 text-left min-w-[220px] max-w-[260px] hover:border-white/20 transition-colors"
+                className="glass flex items-center gap-3 p-2.5 pr-4 text-left min-w-[200px] max-w-[240px] rounded-[20px] hover:border-white/30 transition-all snap-center shadow-2xl backdrop-blur-xl"
               >
                 {loc.image_url && (
                   <img
                     src={loc.image_url}
                     alt={loc.name}
-                    className="w-10 h-10 rounded-lg object-cover flex-shrink-0"
+                    className="w-11 h-11 rounded-xl object-cover flex-shrink-0"
                   />
                 )}
                 <div className="min-w-0">
                   <p className="text-xs font-medium truncate" style={{ color: 'var(--text-primary)' }}>
                     {loc.name}
                   </p>
-                  <p className="text-[10px] capitalize" style={{ color: 'var(--text-muted)' }}>
+                  <p className="text-[10px] capitalize mt-0.5" style={{ color: 'var(--text-muted)' }}>
                     {getTypeEmoji(loc.type)} {loc.type}
                   </p>
                 </div>
