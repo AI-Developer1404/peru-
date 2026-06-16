@@ -285,22 +285,14 @@ export default function ToursFeed({ brandColor, onBack }: ToursFeedProps) {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-              drag="y"
-              dragConstraints={{ top: 0 }}
-              dragElastic={0.2}
-              onDragEnd={(e, { offset, velocity }) => {
-                if (offset.y > 150 || velocity.y > 500) {
-                  setSelectedTour(null);
-                }
-              }}
-              className="fixed bottom-0 left-0 right-0 z-50 rounded-t-3xl max-h-[85vh] overflow-y-auto hide-scrollbar"
-              style={{ background: 'var(--bg-elevated)', backdropFilter: 'blur(40px)', borderTop: '1px solid rgba(255,255,255,0.1)' }}
+              className="fixed bottom-0 left-0 right-0 z-50 rounded-t-3xl max-h-[88vh] overflow-y-auto"
+              style={{ background: 'var(--bg-elevated)', backdropFilter: 'blur(40px)', borderTop: '1px solid rgba(255,255,255,0.1)', WebkitOverflowScrolling: 'touch' }}
             >
-              <div className="flex justify-center pt-3 pb-1 sticky top-0 z-10" style={{ background: 'linear-gradient(to bottom, var(--bg-elevated) 40%, transparent)' }}>
+              <div className="flex justify-center pt-3 pb-1 sticky top-0 z-10" style={{ background: 'var(--bg-elevated)' }}>
                 <div className="w-12 h-1.5 rounded-full bg-white/20" />
               </div>
 
-              <div className="px-6 pb-10 pt-4">
+              <div className="px-6 pb-12 pt-4">
                 <div className="flex items-start justify-between mb-6">
                   <div>
                     <h3 className="font-serif text-2xl text-white mb-1">{tMock(selectedTour.titleKey)}</h3>
